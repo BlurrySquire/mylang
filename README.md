@@ -1,2 +1,3 @@
 # mylang
-Name subject to change.
+
+A programming language

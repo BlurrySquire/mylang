@@ -1,0 +1,8 @@
+# Clangd files
+.cache
+compile_commands.json
+.clangd
+
+# Build files
+build
+mylang
