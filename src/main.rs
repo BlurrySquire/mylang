@@ -1,4 +1,4 @@
-use std::env;
+use std::{env, fs};
 
 mod lexer;
 use lexer::*;
@@ -33,7 +33,10 @@ fn main() {
     println!("Input: {input_file}");
     println!("Output: {output_file}");
 
-    let mut lexer: Lexer = Lexer::new(String::from(CODE_TO_PARSE));
+    let input_source: String = fs::read_to_string(input_file)
+        .expect("Failed to open input file.");
+
+    let mut lexer: Lexer = Lexer::new(input_source);
 
     let tokens: Vec<Token> = match lexer.tokenise() {
         Ok(tokens) => tokens,
