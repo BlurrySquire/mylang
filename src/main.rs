@@ -3,11 +3,8 @@ use std::{env, fs};
 mod lexer;
 use lexer::*;
 
-static CODE_TO_PARSE: &str = 
-"
-print(\"Hello, world!\");
-exit(0);
-";
+mod parser;
+use parser::*;
 
 fn parse_args(args: &Vec<String>, input_file: &mut String, output_file: &mut String) {
     if args.len() < 3 {
@@ -46,4 +43,15 @@ fn main() {
     };
 
     println!("{:?}", tokens);
+
+    let mut parser: Parser = Parser::new(tokens);
+    
+    let program: ProgramAst = match parser.parse() {
+        Ok(program) => program,
+        Err(error) => {
+            panic!("{error}");
+        }
+    };
+
+    println!("{:?}", program);
 }

@@ -1,7 +1,7 @@
 use std::{error, fmt};
 
 #[allow(dead_code)]
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Token {	
 	Semicolon,
 	Comma,
