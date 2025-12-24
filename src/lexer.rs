@@ -6,6 +6,7 @@ pub enum Token {
 	Semicolon,
 	Comma,
     LeftParen, RightParen,
+	LeftBrace, RightBrace,
 
 	StringLiteral(String),
 	IntegerLiteral(i64),
@@ -60,26 +61,34 @@ impl Lexer {
 		let mut tokens: Vec<Token> = Vec::new();
 
 		while self.peek(0).is_some() {
-			if self.peek(0).unwrap() == ';' {
+			if matches!(self.peek(0), Some(';')) {
 				self.consume();
 				tokens.push(Token::Semicolon);
 			}
-			else if self.peek(0).unwrap() == ',' {
+			else if matches!(self.peek(0), Some(',')) {
 				self.consume();
 				tokens.push(Token::Comma);
 			}
-			else if self.peek(0).unwrap() == '(' {
+			else if matches!(self.peek(0), Some('(')) {
 				self.consume();
 				tokens.push(Token::LeftParen);
 			}
-			else if self.peek(0).unwrap() == ')' {
+			else if matches!(self.peek(0), Some(')')) {
 				self.consume();
 				tokens.push(Token::RightParen);
+			}
+			else if matches!(self.peek(0), Some('{')) {
+				self.consume();
+				tokens.push(Token::LeftBrace);
+			}
+			else if matches!(self.peek(0), Some('}')) {
+				self.consume();
+				tokens.push(Token::RightBrace);
 			}
 			else if self.peek(0).unwrap().is_whitespace() {
 				self.consume();
 			}
-			else if self.peek(0).unwrap() == '\"' {
+			else if matches!(self.peek(0), Some('\"')) {
 				let mut buffer: Vec<char> = Vec::new();
 				self.consume();
 

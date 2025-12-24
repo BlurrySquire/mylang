@@ -34,6 +34,7 @@ pub enum Expr {
 #[derive(Debug)]
 pub enum Stmt {
 	Expr(Expr),
+	Scope{ statements: Vec<Stmt> },
 }
 
 #[derive(Debug)]
@@ -131,6 +132,20 @@ impl Parser {
 
 	fn parse_statement(&mut self) -> Result<Stmt, ParserError> {
 		match self.peek(0).unwrap() {
+			Token::LeftBrace => {
+				self.consume();
+
+				let mut statements: Vec<Stmt> = Vec::new();
+
+				while self.peek(0).is_some() && !matches!(self.peek(0), Some(Token::RightBrace)) {
+					statements.push(self.parse_statement()?);
+				}
+
+				self.consume();
+
+				Ok(Stmt::Scope { statements })
+			},
+			
 			_ => {
 				let statement: Stmt = Stmt::Expr(self.parse_expression()?);
 				
